@@ -20,16 +20,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        // policy
-        //     .SetIsOriginAllowed(origin => origin.Contains("vercel.app"))
-        //     .AllowAnyHeader()
-        //     .AllowAnyMethod()
-        //     .AllowCredentials();
+        policy
+            .SetIsOriginAllowed(origin => origin.Contains("vercel.app"))
+             .AllowAnyHeader()
+             .AllowAnyMethod()
+             .AllowCredentials();
 
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
-              .SetIsOriginAllowed(_ => true);
+        //policy.AllowAnyHeader()
+        //      .AllowAnyMethod()
+        //      .AllowCredentials()
+        //      .SetIsOriginAllowed(_ => true);
     });
 });
 
