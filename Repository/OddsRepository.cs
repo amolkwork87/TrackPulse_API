@@ -11,7 +11,7 @@ public class OddsRepository : IOddsRepository
         using var conn = _dapper.CreateConnection();
 
         const string sql = @"
-            INSERT INTO odds (race_horse_id, win_odds, place_odds, updated_at, updated_by)
+            INSERT INTO trackpulse.odds (race_horse_id, win_odds, place_odds, updated_at, updated_by)
             VALUES (@RaceHorseId, @WinOdds, @PlaceOdds, NOW(), @AdminId)";
 
         await conn.ExecuteAsync(sql, new
@@ -33,7 +33,7 @@ public class OddsRepository : IOddsRepository
 
         // For PostgreSQL (recommended)
         const string sql = @"
-        INSERT INTO odds (race_horse_id, win_odds, place_odds, updated_at, updated_by)
+        INSERT INTO trackpulse.odds (race_horse_id, win_odds, place_odds, updated_at, updated_by)
         VALUES (@RaceHorseId, @WinOdds, @PlaceOdds, NOW(),1) -- Replace with actual admin ID if needed
         ON CONFLICT (race_horse_id) 
         DO UPDATE SET 
