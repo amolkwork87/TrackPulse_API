@@ -20,16 +20,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy
-            .SetIsOriginAllowed(origin => origin.Contains("vercel.app"))
-             .AllowAnyHeader()
-             .AllowAnyMethod()
-             .AllowCredentials();
-
-        //policy.AllowAnyHeader()
-        //      .AllowAnyMethod()
-        //      .AllowCredentials()
-        //      .SetIsOriginAllowed(_ => true);
+        policy.WithOrigins("http://localhost:8081",          // Expo local dev
+            "https://trackpulse-snowy.vercel.app")
+        .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetIsOriginAllowed(_ => true);
+              .AllowCredentials();
+              //.SetIsOriginAllowed(_ => true);
     });
 });
 
@@ -101,7 +99,7 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast");
 
 
-app.ApplyDbMigrations(connectionString);
+//app.ApplyDbMigrations(connectionString);
 
 var uploadsRoot = Path.Combine(builder.Environment.ContentRootPath, "uploads");
 Directory.CreateDirectory(uploadsRoot);
