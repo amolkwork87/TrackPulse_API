@@ -17,10 +17,10 @@ public class RaceCardRepository : IRaceCardRepository
     TO_CHAR(r.start_time, 'HH24:MI') AS Time,
     COUNT(rh.horse_id) AS Horses,
     r.status AS Status
-FROM race_days rd
-JOIN venues v        ON v.venue_id = rd.venue_id
-JOIN races r         ON rd.race_day_id = r.race_day_id
-JOIN race_horses rh  ON rh.race_id = r.race_id
+FROM trackpulse.race_days rd
+JOIN trackpulse.venues v        ON v.venue_id = rd.venue_id
+JOIN trackpulse.races r         ON rd.race_day_id = r.race_day_id
+JOIN trackpulse.race_horses rh  ON rh.race_id = r.race_id
 WHERE DATE(rd.race_date) = CURRENT_DATE
 GROUP BY 
     r.race_id, r.race_name, v.venue_name, r.start_time, r.status, rd.city_name
@@ -56,15 +56,15 @@ ORDER BY
                 lo.place_odds       AS PlaceOdds,
                 rh.position          AS Position,
                 t.name              AS TrainerName
-            FROM races r
-            JOIN race_days rd    ON rd.race_day_id   = r.race_day_id            
-            JOIN race_horses rh  ON rh.race_id        = r.race_id
-            JOIN horses h        ON h.horse_id        = rh.horse_id
-            LEFT JOIN jockeys j  ON j.jockey_id       = rh.jockey_id
-            LEFT JOIN trainers t  ON t.id              = rh.trainer_id
+            FROM trackpulse.races r
+            JOIN trackpulse.race_days rd    ON rd.race_day_id   = r.race_day_id            
+            JOIN trackpulse.race_horses rh  ON rh.race_id        = r.race_id
+            JOIN trackpulse.horses h        ON h.horse_id        = rh.horse_id
+            LEFT JOIN trackpulse.jockeys j  ON j.jockey_id       = rh.jockey_id
+            LEFT JOIN trackpulse.trainers t  ON t.id              = rh.trainer_id
             LEFT JOIN LATERAL (
                 SELECT win_odds, place_odds
-                FROM odds
+                FROM trackpulse.odds
                 WHERE race_horse_id = rh.race_horse_id
                 ORDER BY updated_at DESC
                 LIMIT 1
@@ -101,16 +101,16 @@ return result;
                 j.name              AS JockeyName,
                 lo.win_odds         AS WinOdds,
                 lo.place_odds       AS PlaceOdds
-            FROM races r
-            JOIN race_days rd    ON rd.race_day_id   = r.race_day_id
-            JOIN venues v        ON v.venue_id        = rd.venue_id
-            JOIN cities c         ON c.city_id         = v.city_id
-            JOIN race_horses rh  ON rh.race_id        = r.race_id
-            JOIN horses h        ON h.horse_id        = rh.horse_id
-            LEFT JOIN jockeys j  ON j.jockey_id       = rh.jockey_id
+            FROM trackpulse.races r
+            JOIN trackpulse.race_days rd    ON rd.race_day_id   = r.race_day_id
+            JOIN trackpulse.venues v        ON v.venue_id        = rd.venue_id
+            JOIN trackpulse.cities c         ON c.city_id         = v.city_id
+            JOIN trackpulse.race_horses rh  ON rh.race_id        = r.race_id
+            JOIN trackpulse.horses h        ON h.horse_id        = rh.horse_id
+            LEFT JOIN trackpulse.jockeys j  ON j.jockey_id       = rh.jockey_id
             LEFT JOIN LATERAL (
                 SELECT win_odds, place_odds
-                FROM odds
+                FROM trackpulse.odds
                 WHERE race_horse_id = rh.race_horse_id
                 ORDER BY updated_at DESC
                 LIMIT 1
