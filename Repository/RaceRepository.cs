@@ -26,8 +26,8 @@ public class RaceRepository : IRaceRepository
         const string sql = @"SELECT 
                                 r.*, rd.city_name, 
                                 rd.race_date
-                            FROM race_days rd
-                            JOIN races r 
+                            FROM trackpulse.race_days rd
+                            JOIN trackpulse.races r 
                                 ON rd.race_day_id = r.race_day_id
                                     WHERE rd.city_name = @CityName
                                     AND rd.race_date = @RaceDate";
@@ -59,7 +59,7 @@ race.StartTime = DateTime.SpecifyKind(race.StartTime.Value, DateTimeKind.Utc);
 
     public async Task UpdateStatusAsync(int raceId, string status)
 {
-    const string sql = @"UPDATE races SET status = @Status WHERE race_id = @RaceId";
+    const string sql = @"UPDATE trackpulse.races SET status = @Status WHERE race_id = @RaceId";
     using var conn = _dapper.CreateConnection();
     await conn.ExecuteAsync(sql, new { RaceId = raceId, Status = status });
 }
